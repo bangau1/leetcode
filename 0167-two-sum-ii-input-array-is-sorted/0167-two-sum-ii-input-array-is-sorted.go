@@ -9,8 +9,8 @@ func twoSum(numbers []int, target int) []int {
        }else if sum > target {
            r--
        }else{
-           return []int{l+1, r+1}
+            break        
        }
    }
-   return []int{0,0}//invalid
+   return []int{l+1, r+1}
 }
