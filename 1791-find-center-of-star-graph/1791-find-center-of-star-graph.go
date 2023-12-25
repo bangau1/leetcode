@@ -1,16 +1,16 @@
 func findCenter(edges [][]int) int {
-    edgeCount := make(map[int]int)
+    n := len(edges)+1
+    edgeCount := make([]int, n)
 
     for _, edge := range edges {
-        s, t := edge[0], edge[1]
+        s, t := edge[0]-1, edge[1]-1
         edgeCount[s]++
         edgeCount[t]++
     }
 
-    n := len(edgeCount)
     for node, count := range edgeCount {
         if count == n -1 {
-            return node
+            return node+1
         }
     }
     return -1
