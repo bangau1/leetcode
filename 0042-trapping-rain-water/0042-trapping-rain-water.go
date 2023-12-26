@@ -78,9 +78,7 @@ func trap(heights []int) int {
             for l+1 < r {
                 l++
                 diff := h - heights[l]
-                if diff >0{
-                    subtotal += diff
-                }
+                subtotal += diff
             }
             i = r+1
         }else{
