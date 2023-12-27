@@ -11,7 +11,7 @@ func hasPath(maze [][]int, start []int, destination []int) bool {
     // after we already have the adjacent matrix/list, the next thing to do is to find whether we can go 
     // from source to dest
     //
-    // We can just use a simple bfs for this
+    // We can just use a simple bfs/dfs for this
     // Time Complexity: O(M x N)
     // 1. calculate the adjacent list for each cell can be done via dp in 4 direction. O(4 M x N) = O(MN)
     // 2. Then for the BFS: the worst case is we may need to traverse all vertices (considerably linear to M x N). But we can do a simple check, if the inbound edges to destination is zero or outbound from source is zero, then just return false
@@ -96,32 +96,32 @@ func hasPath(maze [][]int, start []int, destination []int) bool {
     }
     
     // fmt.Println(adjList)
-    inEdge := 0
-    for i:=0;i<m;i++{
-        for j:=0;j<n;j++{
-            for _, adj := range adjList[i][j] {
-                if maze[adj.x][adj.y] == 1 {
-                    fmt.Println("found invalid adj(", i, j, ")", adjList[i][j])
-                    panic("unexpected")
-                }
-                if adj.x == destination[0] && adj.y == destination[1] {
-                    inEdge+=1
-                    break
-                }
+    // inEdge := 0
+    // for i:=0;i<m;i++{
+    //     for j:=0;j<n;j++{
+    //         for _, adj := range adjList[i][j] {
+    //             if maze[adj.x][adj.y] == 1 {
+    //                 fmt.Println("found invalid adj(", i, j, ")", adjList[i][j])
+    //                 panic("unexpected")
+    //             }
+    //             if adj.x == destination[0] && adj.y == destination[1] {
+    //                 inEdge+=1
+    //                 break
+    //             }
                 
-            }
-            if inEdge > 0 {
-                break
-            }
-        }
-        if inEdge > 0 {
-            break
-        }
-    }
-    if inEdge == 0 {
-        // fmt.Println("inedge 0")
-        return false
-    }
+    //         }
+    //         if inEdge > 0 {
+    //             break
+    //         }
+    //     }
+    //     if inEdge > 0 {
+    //         break
+    //     }
+    // }
+    // if inEdge == 0 {
+    //     // fmt.Println("inedge 0")
+    //     return false
+    // }
 
     visited := make([][]bool, m)
     for i:=0;i<m;i++{
@@ -133,12 +133,14 @@ func hasPath(maze [][]int, start []int, destination []int) bool {
     stack := make([]vertex, 0)
     stack = append(stack, adjList[start[0]][start[1]]...)
     for len(stack) > 0 {
-        node := stack[len(stack)-1]
-        stack = stack[0:len(stack)-1]
+        // node := stack[len(stack)-1]
+        // stack = stack[0:len(stack)-1]
+        node := stack[0]
+        stack = stack[1:]
         // fmt.Println("visit", node, maze[node.x][node.y])
-        if maze[node.x][node.y] == 1 {
-            panic("unexpected")
-        }
+        // if maze[node.x][node.y] == 1 {
+        //     panic("unexpected")
+        // }
         if node == target{
             return true
         }
