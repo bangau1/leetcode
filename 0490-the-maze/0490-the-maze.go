@@ -106,9 +106,12 @@ func hasPath(maze [][]int, start []int, destination []int) bool {
                 }
                 if adj.x == destination[0] && adj.y == destination[1] {
                     inEdge+=1
-                    // break
+                    break
                 }
                 
+            }
+            if inEdge > 0 {
+                break
             }
         }
         if inEdge > 0 {
