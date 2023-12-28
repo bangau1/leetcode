@@ -118,32 +118,32 @@ func shortestDistance(maze [][]int, start []int, destination []int) int {
     }
     
     // fmt.Println(adjList)
-    inEdge := 0
-    for i:=0;i<m;i++{
-        for j:=0;j<n;j++{
-            for _, adj := range adjList[i][j] {
-                if maze[adj.x][adj.y] == 1 {
-                    fmt.Println("found invalid adj(", i, j, ")", adjList[i][j])
-                    panic("unexpected")
-                }
-                if adj.x == destination[0] && adj.y == destination[1] {
-                    inEdge+=1
-                    break
-                }
+    // inEdge := 0
+    // for i:=0;i<m;i++{
+    //     for j:=0;j<n;j++{
+    //         for _, adj := range adjList[i][j] {
+    //             if maze[adj.x][adj.y] == 1 {
+    //                 fmt.Println("found invalid adj(", i, j, ")", adjList[i][j])
+    //                 panic("unexpected")
+    //             }
+    //             if adj.x == destination[0] && adj.y == destination[1] {
+    //                 inEdge+=1
+    //                 break
+    //             }
                 
-            }
-            if inEdge > 0 {
-                break
-            }
-        }
-        if inEdge > 0 {
-            break
-        }
-    }
-    if inEdge == 0 {
-        // fmt.Println("inedge 0")
-        return -1
-    }
+    //         }
+    //         if inEdge > 0 {
+    //             break
+    //         }
+    //     }
+    //     if inEdge > 0 {
+    //         break
+    //     }
+    // }
+    // if inEdge == 0 {
+    //     // fmt.Println("inedge 0")
+    //     return -1
+    // }
 
     visited := make([][]bool, m)
     for i:=0;i<m;i++{
