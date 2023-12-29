@@ -5,7 +5,7 @@ type trie struct {
 func newTrie(words []string) trie {
     tr := trie{
         root: &node{
-            children: make(map[rune]*node),
+            children: make([]*node, 26),
         },
     }
     for _, word := range words {
@@ -15,14 +15,14 @@ func newTrie(words []string) trie {
 }
 
 type node struct {
-    children map[rune]*node
+    children []*node
     wordCount int
     prefixCount int
 }
 
 type parentToChild struct{
     parent *node
-    childLetter rune
+    childLetter int
 }
 
 func (this *node) addWord(word string) {
@@ -33,10 +33,10 @@ func (this *node) addWord(word string) {
     }
 
     this.prefixCount++
-    letter := rune(word[0])
+    letter := int(word[0]-"a"[0])
     if this.children[letter] == nil {
         this.children[letter] = &node{
-            children: make(map[rune]*node),
+            children: make([]*node, 26),
         }
     }
     this.children[letter].addWord(word[1:])
@@ -46,7 +46,7 @@ func (this *trie) removeWord(word string) {
     var curr = this.root
     var parents = make([]parentToChild, 0)
     for i:=0;i<len(word);i++{
-        letter := rune(word[i])
+        letter := int(word[i]-"a"[0])
         if curr.children[letter] == nil {
             return
         }
@@ -55,16 +55,17 @@ func (this *trie) removeWord(word string) {
     }
     curr.wordCount--
     curr.prefixCount--
-    // for len(parents) > 0 {
-    //     p := parents[len(parents)-1]
-    //     parents = parents[0:len(parents)-1]
+    // this below is optional, can be useful if the length of word is quite large, so we can remove unnecessary pointer
+    for len(parents) > 0 {
+        p := parents[len(parents)-1]
+        parents = parents[0:len(parents)-1]
         
-    //     if curr.prefixCount == 0 {
-    //         delete(p.parent.children, p.childLetter)
-    //     }
-    //     p.parent.prefixCount--
-    //     curr = p.parent
-    // }
+        if curr.prefixCount == 0 {
+            p.parent.children[p.childLetter] = nil
+        }
+        p.parent.prefixCount--
+        curr = p.parent
+    }
 }
 
 func (this *node) search(word string) bool {
@@ -80,7 +81,7 @@ func (this *node) search(word string) bool {
         }
     }
 
-    letter := rune(word[0])
+    letter := int(word[0]-"a"[0])
     return this.children[letter].search(word[1:])
 }
 
@@ -98,7 +99,7 @@ func wordBreakByTrie(tr trie, s string) bool {
         // from starting index i, we will traverse the trie and mark the dp[j] to true if the word is there
         var curr = tr.root
         for start:=i; start < len(s); start++{
-            letter := rune(s[start])
+            letter := int(s[start]-"a"[0])
 
             if curr.children[letter] == nil {
                 break
@@ -121,15 +122,10 @@ func findAllConcatenatedWordsInADict(words []string) []string {
         return len(words[a]) > len(words[b])
     })
     for i:=0;i<len(words)-1;i++{
-        // prev := tr.root.prefixCount
         tr.removeWord(words[i])
-        segmentWord := words[i]
-        if wordBreakByTrie(tr, segmentWord){
-            res = append(res, segmentWord)
+        if wordBreakByTrie(tr, words[i]){
+            res = append(res, words[i])
         }
-        // if tr.root.prefixCount >= prev {
-        //     panic("failed")
-        // }
         
     }
     return res
