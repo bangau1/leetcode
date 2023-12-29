@@ -60,7 +60,7 @@ func (this *trie) removeWord(word string) {
         parents = parents[0:len(parents)-1]
         
         if curr.prefixCount == 0 {
-            p.parent.children[p.childLetter] = nil
+            delete(p.parent.children, p.childLetter)
         }
         p.parent.prefixCount--
         curr = p.parent
