@@ -117,7 +117,10 @@ func wordBreakByTrie(tr trie, s string) bool {
 func findAllConcatenatedWordsInADict(words []string) []string {
     tr := newTrie(words)
     res := make([]string, 0)
-    for i:=0;i<len(words);i++{
+    sort.Slice(words, func(a, b int)bool {
+        return len(words[a]) > len(words[b])
+    })
+    for i:=0;i<len(words)-1;i++{
         tr.removeWord(words[i])
         segmentWord := words[i]
         if wordBreakByTrie(tr, segmentWord){
