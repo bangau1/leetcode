@@ -55,16 +55,16 @@ func (this *trie) removeWord(word string) {
     }
     curr.wordCount--
     curr.prefixCount--
-    for len(parents) > 0 {
-        p := parents[len(parents)-1]
-        parents = parents[0:len(parents)-1]
+    // for len(parents) > 0 {
+    //     p := parents[len(parents)-1]
+    //     parents = parents[0:len(parents)-1]
         
-        if curr.prefixCount == 0 {
-            delete(p.parent.children, p.childLetter)
-        }
-        p.parent.prefixCount--
-        curr = p.parent
-    }
+    //     if curr.prefixCount == 0 {
+    //         delete(p.parent.children, p.childLetter)
+    //     }
+    //     p.parent.prefixCount--
+    //     curr = p.parent
+    // }
 }
 
 func (this *node) search(word string) bool {
@@ -121,15 +121,15 @@ func findAllConcatenatedWordsInADict(words []string) []string {
         return len(words[a]) > len(words[b])
     })
     for i:=0;i<len(words)-1;i++{
-        prev := tr.root.prefixCount
+        // prev := tr.root.prefixCount
         tr.removeWord(words[i])
         segmentWord := words[i]
         if wordBreakByTrie(tr, segmentWord){
             res = append(res, segmentWord)
         }
-        if tr.root.prefixCount >= prev {
-            panic("failed")
-        }
+        // if tr.root.prefixCount >= prev {
+        //     panic("failed")
+        // }
         
     }
     return res
