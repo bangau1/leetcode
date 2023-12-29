@@ -126,7 +126,6 @@ func findAllConcatenatedWordsInADict(words []string) []string {
         if wordBreakByTrie(tr, segmentWord){
             res = append(res, segmentWord)
         }
-        tr.root.addWord(words[i])
         
     }
     return res
