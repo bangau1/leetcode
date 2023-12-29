@@ -121,10 +121,14 @@ func findAllConcatenatedWordsInADict(words []string) []string {
         return len(words[a]) > len(words[b])
     })
     for i:=0;i<len(words)-1;i++{
+        prev := tr.root.prefixCount
         tr.removeWord(words[i])
         segmentWord := words[i]
         if wordBreakByTrie(tr, segmentWord){
             res = append(res, segmentWord)
+        }
+        if tr.root.prefixCount >= prev {
+            panic("failed")
         }
         
     }
