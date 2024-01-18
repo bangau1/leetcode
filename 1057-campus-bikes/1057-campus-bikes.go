@@ -3,46 +3,113 @@ type pair struct {
     dist int
 }
 
-type minHeap []pair
+type minHeap[T any] struct{
+    data []T
+    less func(a, b T) bool
+} 
 
-func (m minHeap) Less(a, b int) bool {
-    if m[a].dist == m[b].dist {
-        if m[a].worker == m[b].worker {
-            return m[a].bike < m[b].bike
-        }
-        return m[a].worker < m[b].worker
+func NewMinHeap[T any](less func(a, b T)bool, initial ...T) minHeap[T] {
+    res := minHeap[T]{
+        less: less,
     }
-    return m[a].dist < m[b].dist
+    if len(initial) > 0 {
+        res.data = make([]T, len(initial))
+        copy(res.data, initial)
+        heap.Init(&res)
+    }
+    return res
 }
 
-func (m minHeap) Swap(a, b int) {
-    m[a], m[b] = m[b], m[a]
+func (m minHeap[T]) Less(a, b int) bool {
+    return m.less(m.data[a], m.data[b])
 }
 
-func (m minHeap) Len() int {
-    return len(m)
+func (m minHeap[T]) Swap(a, b int) {
+    m.data[a], m.data[b] = m.data[b], m.data[a]
 }
 
-func (m *minHeap) Pop() any {
+func (m minHeap[T]) Len() int {
+    return len(m.data)
+}
+
+func (m *minHeap[T]) Pop() any {
     l := m.Len()
-    item := (*m)[l-1]
-    *m = (*m)[0:l-1]
+    item := m.data[l-1]
+    m.data = m.data[0:l-1]
     return item
 }
 
-func (m *minHeap) Push(a any) {
-    *m = append(*m, a.(pair))
+func (m *minHeap[T]) Push(a any) {
+    m.data = append(m.data, a.(T))
 }
 
 func assignBikes(workers [][]int, bikes [][]int) []int {
-    pq := make(minHeap, 0)
+    pqList := NewMinHeap[minHeap[pair]](LessPqFunc)
+
+    for i, workerPos := range workers {
+        pqWorker := NewMinHeap[pair](LessPairFunc)
+        for ii, bikePos := range bikes {
+            dist := abs(workerPos[0] - bikePos[0]) + abs(workerPos[1] - bikePos[1])
+            candidate := pair{
+                i,ii, dist,
+            }
+            pqWorker.data = append(pqWorker.data, candidate)
+            
+        }
+        heap.Init(&pqWorker)
+        pqList.data = append(pqList.data, pqWorker)
+    }
+    heap.Init(&pqList)
+    res := make([]int, len(workers))
+    bikeFlag := make([]bool, len(bikes))
+    
+    for pqList.Len() > 0 {
+        pqWorker := heap.Pop(&pqList).(minHeap[pair])
+        pairData := heap.Pop(&pqWorker).(pair)
+        for bikeFlag[pairData.bike] {
+            pairData = heap.Pop(&pqWorker).(pair)
+        }
+        res[pairData.worker] = pairData.bike
+        bikeFlag[pairData.bike] = true
+    }
+
+
+    return res
+
+}
+
+func abs(a int) int {
+    if a < 0 {
+        return -a
+    }
+    return a
+}
+
+func LessPairFunc(a, b pair) bool {
+    if a.dist == b.dist {
+        if a.worker == b.worker {
+            return a.bike < b.bike
+        }
+        return a.worker < b.worker
+    }
+    return a.dist < b.dist
+}
+
+func LessPqFunc(a, b minHeap[pair]) bool {
+    return LessPairFunc(a.data[0], b.data[0])
+}
+
+func normalPqSolution(workers [][]int, bikes [][]int) []int{
+    pq := NewMinHeap[pair](LessPairFunc)
     
     for i, workerPos := range workers {
         for ii, bikePos := range bikes {
             dist := abs(workerPos[0] - bikePos[0]) + abs(workerPos[1] - bikePos[1])
-            pq = append(pq, pair{
+            candidate := pair{
                 i,ii, dist,
-            })
+            }
+            pq.data = append(pq.data, candidate)
+            
         }
     }
     heap.Init(&pq)
@@ -64,11 +131,4 @@ func assignBikes(workers [][]int, bikes [][]int) []int {
         }
     }
     return res
-}
-
-func abs(a int) int {
-    if a < 0 {
-        return -a
-    }
-    return a
 }
