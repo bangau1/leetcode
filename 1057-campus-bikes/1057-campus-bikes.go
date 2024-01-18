@@ -64,16 +64,16 @@ func assignBikes(workers [][]int, bikes [][]int) []int {
     bikeFlag := make([]bool, len(bikes))
     
     for pqList.Len() > 0 {
-        pqWorker := heap.Pop(&pqList).(minHeap[pair])
-        pairData := heap.Pop(&pqWorker).(pair)
+        pairData := pqList.data[0].data[0]
         for bikeFlag[pairData.bike] {
-            pairData = heap.Pop(&pqWorker).(pair)
+            heap.Pop(&(pqList.data[0]))
+            heap.Fix(&pqList, 0)
+            pairData = pqList.data[0].data[0]
         }
         res[pairData.worker] = pairData.bike
         bikeFlag[pairData.bike] = true
+        heap.Pop(&pqList)
     }
-
-
     return res
 
 }
