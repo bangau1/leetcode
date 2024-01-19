@@ -3,6 +3,12 @@ type pair struct{
 }
 func twoSum(sorted []int, start, end, target int) [][]int {
     l, r := start, end
+    if sorted[l] + sorted[l+1] > target {
+        return nil
+    }
+    if sorted[r-1] + sorted[r] < target {
+        return nil
+    }
     res := make([][]int, 0)
     for l < r {
         sum := sorted[l] + sorted[r]
