@@ -10,15 +10,14 @@ func twoSum(sorted []int, start, end, target int) [][]int {
         return nil
     }
     res := make([][]int, 0)
-    for l < r {
-        sum := sorted[l] + sorted[r]
-        if sum < target {
-            l++
-        }else if sum > target {
-            r--
-        }else{
-            res = append(res, []int{sorted[l], sorted[r]})
-            l++
+    for i:=start;i<=end;i++{
+        search := target - sorted[i]
+        idx := sort.Search(len(sorted[i+1:end+1]), func (idx int)bool {
+            return sorted[i+1+idx] >= search
+        }) + i+1
+
+        if idx < len(sorted) && sorted[idx] == search {
+            res = append(res, []int{sorted[i], sorted[idx]})
         }
     }
     return res
