@@ -1,52 +1,38 @@
-type pair struct{
-    a, b, c int
-}
-func twoSum(counting map[int]int, nums []int, start, end, target int) [][]int {
+
+func twoSum(sorted []int, start, end, target int) [][]int {
+    l, r := start, end
+    if sorted[l] + sorted[l+1] > target {
+        return nil
+    }
+    if sorted[r-1] + sorted[r] < target {
+        return nil
+    }
     res := make([][]int, 0)
-    for num, count := range counting {
-        if  target - num == num  && count >= 2 {
-            res = append(res, []int{num, num})
-        }else if target-num != num && count >= 1 && counting[target-num] >= 1{
-            res = append(res, []int{num, target-num})
+    for l < r {
+        sum := sorted[l] + sorted[r]
+        if sum < target {
+            l++
+        }else if sum > target {
+            r--
+        }else{
+            res = append(res, []int{sorted[l], sorted[r]})
+            l++
         }
     }
-    // for i:=start;i<=end;i++{
-    //     search := target - nums[i]
-
-    //     counting[nums[i]]--
-    //     if counting[search] > 0 {
-    //         res = append(res, []int{nums[i], search})
-    //     }
-
-    //     counting[nums[i]]++
-    // }
     return res
 }
 
 func threeSum(nums []int) [][]int {
-    counting := make(map[int]int)
-    for _, num := range nums {
-        counting[num]++
-    }
-
-    flag := make(map[pair]bool)
+    sort.Ints(nums)
     res := make([][]int, 0)
-    for i:=0;i<len(nums);i++{
-        counting[nums[i]]--
-        if counting[nums[i]] == 0 {
-            delete(counting, nums[i])
-        }
-        
-        data := twoSum(counting, nums, i+1, len(nums)-1, -nums[i])
-        
+    for i:=0;i<len(nums)-2;i++{
+        data := twoSum(nums, i+1, len(nums)-1, -nums[i])
         for _, datum := range data {
             arr := []int{nums[i], datum[0], datum[1]}
-            sort.Ints(arr)
-            p := pair{arr[0], arr[1], arr[2]}
-            if !flag[p] {
                 res = append(res, arr)
-                flag[p] = true
-            }
+        }
+        for i + 1 <len(nums) && nums[i+1] == nums[i] {
+            i++
         }
     }
     return res
