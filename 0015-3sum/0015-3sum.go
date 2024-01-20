@@ -1,38 +1,40 @@
 type pair struct{
     a, b, c int
 }
-func twoSum(sorted []int, start, end, target int) [][]int {
-    l, r := start, end
-    if sorted[l] + sorted[l+1] > target {
-        return nil
-    }
-    if sorted[r-1] + sorted[r] < target {
-        return nil
-    }
+func twoSum(counting map[int]int, nums []int, start, end, target int) [][]int {
     res := make([][]int, 0)
     for i:=start;i<=end;i++{
-        search := target - sorted[i]
-        idx := sort.Search(len(sorted[i+1:end+1]), func (idx int)bool {
-            return sorted[i+1+idx] >= search
-        }) + i+1
+        search := target - nums[i]
 
-        if idx < len(sorted) && sorted[idx] == search {
-            res = append(res, []int{sorted[i], sorted[idx]})
+        counting[nums[i]]--
+        if counting[search] > 0 {
+            res = append(res, []int{nums[i], search})
         }
+
+        counting[nums[i]]++
     }
     return res
 }
 
 func threeSum(nums []int) [][]int {
-    sort.Ints(nums)
+    counting := make(map[int]int)
+    for _, num := range nums {
+        counting[num]++
+    }
+
     flag := make(map[pair]bool)
     res := make([][]int, 0)
     for i:=0;i<len(nums)-2;i++{
-        data := twoSum(nums, i+1, len(nums)-1, -nums[i])
+        counting[nums[i]]--
+        
+        data := twoSum(counting, nums, i+1, len(nums)-1, -nums[i])
+        
         for _, datum := range data {
-            p := pair{nums[i], datum[0], datum[1]}
+            arr := []int{nums[i], datum[0], datum[1]}
+            sort.Ints(arr)
+            p := pair{arr[0], arr[1], arr[2]}
             if !flag[p] {
-                res = append(res, []int{nums[i], datum[0], datum[1]})
+                res = append(res, arr)
                 flag[p] = true
             }
         }
