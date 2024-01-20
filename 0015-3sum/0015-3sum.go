@@ -16,6 +16,9 @@ func twoSum(sorted []int, start, end, target int) [][]int {
             r--
         }else{
             res = append(res, []int{sorted[l], sorted[r]})
+            for l + 1 < len(sorted) && sorted[l] == sorted[l+1] {
+                l++
+            }
             l++
         }
     }
