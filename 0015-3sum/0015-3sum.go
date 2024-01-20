@@ -3,16 +3,23 @@ type pair struct{
 }
 func twoSum(counting map[int]int, nums []int, start, end, target int) [][]int {
     res := make([][]int, 0)
-    for i:=start;i<=end;i++{
-        search := target - nums[i]
-
-        counting[nums[i]]--
-        if counting[search] > 0 {
-            res = append(res, []int{nums[i], search})
+    for num, count := range counting {
+        if num + num == target && count >= 2 {
+            res = append(res, []int{num, num})
+        }else if count >= 1 && counting[target-num] >= 1{
+            res = append(res, []int{num, target-num})
         }
-
-        counting[nums[i]]++
     }
+    // for i:=start;i<=end;i++{
+    //     search := target - nums[i]
+
+    //     counting[nums[i]]--
+    //     if counting[search] > 0 {
+    //         res = append(res, []int{nums[i], search})
+    //     }
+
+    //     counting[nums[i]]++
+    // }
     return res
 }
 
