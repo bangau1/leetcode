@@ -4,9 +4,9 @@ type pair struct{
 func twoSum(counting map[int]int, nums []int, start, end, target int) [][]int {
     res := make([][]int, 0)
     for num, count := range counting {
-        if num + num == target && count >= 2 {
+        if  target - num == num  && count >= 2 {
             res = append(res, []int{num, num})
-        }else if count >= 1 && counting[target-num] >= 1{
+        }else if target-num != num && count >= 1 && counting[target-num] >= 1{
             res = append(res, []int{num, target-num})
         }
     }
@@ -31,8 +31,11 @@ func threeSum(nums []int) [][]int {
 
     flag := make(map[pair]bool)
     res := make([][]int, 0)
-    for i:=0;i<len(nums)-2;i++{
+    for i:=0;i<len(nums);i++{
         counting[nums[i]]--
+        if counting[nums[i]] == 0 {
+            delete(counting, nums[i])
+        }
         
         data := twoSum(counting, nums, i+1, len(nums)-1, -nums[i])
         
