@@ -1,6 +1,15 @@
 func minDistance(word1 string, word2 string) int {
     m, n := len(word1), len(word2)
-    fmt.Println(m, n)
+    
+    if m == 0 {
+        return n
+    }else if n == 0 {
+        return m
+    }else if m == n && word1==word2{
+        return 0
+    }
+
+
     dp := make([][]int, m+1)
     for i:=0;i<=m;i++{
         dp[i] = make([]int, n+1)
