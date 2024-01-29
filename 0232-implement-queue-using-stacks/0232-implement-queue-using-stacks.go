@@ -1,33 +1,72 @@
+type Stack[T any] struct {
+    data []T
+}
+func NewStack[T any]() Stack[T]{
+    return Stack[T]{data:make([]T, 0)}
+}
+
+func (this *Stack[T]) Pop() T{
+    item := this.data[this.Len()-1]
+    this.data = this.data[0:this.Len()-1]
+    return item
+}
+
+func (this *Stack[T]) Peek() T{
+    return this.data[this.Len()-1]
+}
+
+func (this *Stack[T]) Push(a T) {
+    this.data = append(this.data, a)
+}
+
+func (this *Stack[T]) Len() int {
+    return len(this.data)
+}
+
+func (this *Stack[T]) Empty() bool {
+    return this.Len() == 0
+}
 
 type MyQueue struct {
-    q []int
+    in Stack[int]
+    out Stack[int]
 }
 
 
 func Constructor() MyQueue {
-    return MyQueue{q:make([]int,0)}
+    return MyQueue{
+        in: NewStack[int](),
+        out: NewStack[int](),
+    }
 }
 
 
 func (this *MyQueue) Push(x int)  {
-    this.q = append(this.q, x)
+    for !this.out.Empty(){
+        this.in.Push(this.out.Pop())
+    }
+    this.in.Push(x)
 }
 
 
 func (this *MyQueue) Pop() int {
-    item := this.q[0]
-    this.q = this.q[1:]
-    return item
+    for !this.in.Empty(){
+        this.out.Push(this.in.Pop())
+    }
+    return this.out.Pop()
 }
 
 
 func (this *MyQueue) Peek() int {
-    return this.q[0]
+    for !this.in.Empty(){
+        this.out.Push(this.in.Pop())
+    }
+    return this.out.Peek()
 }
 
 
 func (this *MyQueue) Empty() bool {
-    return len(this.q) == 0
+    return this.in.Empty() && this.out.Empty()
 }
 
 
