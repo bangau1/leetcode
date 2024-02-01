@@ -6,7 +6,8 @@ func numWays(steps int, arrLen int) int {
     // dp[s][i] = dp[s-1][i-1]  + // left
     //            dp[s-1][i+1] + // right
     //            dp[s-1][i] // stay
-    n := min(steps, arrLen)
+    
+    n := min(steps, arrLen) // we only care about max position at n = minimum(steps, arrLen)
     dp := make([]int, n)
     prev := make([]int, n)
     dp[0] = 1
