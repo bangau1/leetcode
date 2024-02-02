@@ -1,11 +1,15 @@
 func minOperations(nums []int) int {
-    counter := make(map[int]int)
+    counter := make([]int, 1e6+1)
 
     for _, num := range nums {
         counter[num]++
     }
     total := 0
-    for _, count := range counter {
+    for i:=1;i<len(counter);i++ {
+        count := counter[i]
+        if count == 0 {
+            continue
+        }
         if count == 1 {
             return -1
         }
