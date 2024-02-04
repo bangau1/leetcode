@@ -10,6 +10,9 @@ func minWindow(s string, t string) string {
     }
 
     isMatched := func(sMap map[byte]int) bool {
+        if len(sMap) < len(tMap) {
+            return false
+        }
         for char, count := range tMap {
             if sMap[char] < count{
                 return false
@@ -30,6 +33,9 @@ func minWindow(s string, t string) string {
                 res = s[l:r+1]
             }
             windowMap[s[l]]--
+            if windowMap[s[l]] == 0 {
+                delete(windowMap, s[l])
+            }
             l++
         }else{
             r++
