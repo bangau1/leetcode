@@ -33,7 +33,7 @@ func minWindow(s string, t string) string {
                 res = s[l:r+1]
             }
             windowMap[s[l]]--
-            if windowMap[s[l]] == 0 {
+            if windowMap[s[l]] <= 0 {
                 delete(windowMap, s[l])
             }
             l++
