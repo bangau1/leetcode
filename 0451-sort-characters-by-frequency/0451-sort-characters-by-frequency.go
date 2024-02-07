@@ -59,12 +59,12 @@ func frequencySort(s string) string {
         return summaries[a].count > summaries[b].count
     })
 
-    var b bytes.Buffer
+    res := make([]byte, 0)
     for _, summary := range summaries{
         for i:=0;i<summary.count;i++{
-            fmt.Fprintf(&b, "%s", string(summary.char))
+            res = append(res, summary.char)
         }
     }
-    return b.String()
+    return string(res)
 
 }
