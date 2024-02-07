@@ -118,32 +118,32 @@ func shortestDistance(original []string, changed []string, cost []int) map[node]
     }
 
     // fmt.Println("===========")
-    // n := len(nodes)
+    n := len(nodes)
 
-    // for inner:=0;inner<n;inner++{
-    //     for s:=0;s<n;s++{
-    //         for d:=0;d<n;d++{
-    //             i := nodes[s]
-    //             j := nodes[d]
-    //             k := nodes[inner]
-    //             _, ok1:=costMatrix[i][k]
-    //             _, ok2:=costMatrix[k][j]
-    //             if ok1 && ok2 {
-    //                 if _, ok:=costMatrix[i][j]; !ok {
-    //                     costMatrix[i][j] = costMatrix[i][k] + costMatrix[k][j]
-    //                 }else{
-    //                     costMatrix[i][j] = min(costMatrix[i][j], costMatrix[i][k] + costMatrix[k][j])
-    //                 }
-    //             }
-    //         }
-    //     }
-    // }
-
-    for _, source := range nodes {
-        res := djikstra(source, costMatrix)
-        costMatrix[source] = res
-
+    for inner:=0;inner<n;inner++{
+        for s:=0;s<n;s++{
+            for d:=0;d<n;d++{
+                i := nodes[s]
+                j := nodes[d]
+                k := nodes[inner]
+                _, ok1:=costMatrix[i][k]
+                _, ok2:=costMatrix[k][j]
+                if ok1 && ok2 {
+                    if _, ok:=costMatrix[i][j]; !ok {
+                        costMatrix[i][j] = costMatrix[i][k] + costMatrix[k][j]
+                    }else{
+                        costMatrix[i][j] = min(costMatrix[i][j], costMatrix[i][k] + costMatrix[k][j])
+                    }
+                }
+            }
+        }
     }
+
+    // for _, source := range nodes {
+    //     res := djikstra(source, costMatrix)
+    //     costMatrix[source] = res
+
+    // }
 
     return costMatrix
 }
