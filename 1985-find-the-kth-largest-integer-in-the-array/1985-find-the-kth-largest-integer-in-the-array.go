@@ -81,11 +81,6 @@ func kthLargestNumber(strs []string, k int) string {
     for i:=0;i<n;i++{
         nums[i] = PositiveBigInt(strs[i])
     }
-    sort.Slice(nums, func (a, b int) bool {
-        cmp := nums[a].CompareTo(nums[b])
-        return cmp < 0
-    })
-    // fmt.Println("nums", nums)
 
     pq := NewMinHeap[PositiveBigInt](func (a, b PositiveBigInt) bool {
         cmp := a.CompareTo(b)
