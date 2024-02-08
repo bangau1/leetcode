@@ -1,25 +1,18 @@
-func numSquares(n int) int {
-    dp := make([]int, n+1)
+var psq = make([]int, 0)
+
+var dp []int
+func init() {
+    for i:=1; i <= 100;i++{
+        sq := i*i
+        psq = append(psq, sq)
+    }
+    n := 10000
+    dp = make([]int, n+1)
     for i:=0;i<=n;i++{
         dp[i] = -1
     }
     dp[0] = 0
     
-    psq := make([]int, 0)
-    upperBound := int(math.Sqrt(float64(n))) + 1
-    for i:=1; i <= upperBound;i++{
-        sq := i*i
-        psq = append(psq, sq)
-        if sq <= n {
-            dp[sq] = 1
-        }
-        if sq == n {
-            return 1 
-        }
-    }
-
-    // dp[i] = min(dp[i-prevSq] + 1)
-
     for i:=1;i<=n;i++{
         if dp[i] == 1 {
             continue
@@ -36,5 +29,8 @@ func numSquares(n int) int {
         dp[i] = res
     }
 
+}
+
+func numSquares(n int) int {
     return dp[n]
 }
