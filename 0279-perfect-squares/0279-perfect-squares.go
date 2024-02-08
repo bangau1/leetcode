@@ -6,7 +6,7 @@ func numSquares(n int) int {
     dp[0] = 0
     
     psq := make([]int, 0)
-    for i:=1;i<=100;i++{
+    for i:=1;i<=100 && i*i <=n;i++{
         sq := i*i
         psq = append(psq, sq)
         if sq <= n {
@@ -29,7 +29,7 @@ func numSquares(n int) int {
             return psq[idx] > i
         })
         res := math.MaxInt
-        for ii:= upper-1;ii>=0;ii--{
+        for ii:= upper-1;ii>=0 ;ii--{
             res = min(res, 1 + dp[i-psq[ii]])
         }
         dp[i] = res
