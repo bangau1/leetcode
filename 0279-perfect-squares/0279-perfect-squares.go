@@ -6,7 +6,8 @@ func numSquares(n int) int {
     dp[0] = 0
     
     psq := make([]int, 0)
-    for i:=1;i<=100 && i*i <=n;i++{
+    upperBound := int(math.Sqrt(float64(n))) + 1
+    for i:=1;i<=100 && i <= upperBound;i++{
         sq := i*i
         psq = append(psq, sq)
         if sq <= n {
