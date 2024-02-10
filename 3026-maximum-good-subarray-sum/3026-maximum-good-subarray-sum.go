@@ -13,24 +13,24 @@ func maximumSubarraySum(nums []int, k int) int64 {
     }
 
     res := int64(math.MinInt)
-    track := make(map[int][]int)
+    track := make(map[int]int)
     found := false
     for i:=0;i<n;i++{
         num := nums[i]
-        if track[num+k] != nil {
-            res = max(res, rangeSum(track[num+k][0], i))
+        if _, ok:=track[num+k]; ok {
+            res = max(res, rangeSum(track[num+k], i))
             found = true
         }
-        if track[num-k] != nil {
-            res = max(res, rangeSum(track[num-k][0], i))
+        if _, ok:=track[num-k]; ok {
+            res = max(res, rangeSum(track[num-k], i))
             found = true
         }
 
-        if track[num] == nil {
-            track[num] = []int{i}
+        if _, ok:=track[num]; !ok {
+            track[num] = i
         }else{
-            if prefixSum[i] < prefixSum[track[num][0]] {
-                track[num][0] = i
+            if prefixSum[i] < prefixSum[track[num]] {
+                track[num] = i
             }
         }
     }
