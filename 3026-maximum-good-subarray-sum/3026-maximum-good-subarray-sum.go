@@ -29,7 +29,11 @@ func maximumSubarraySum(nums []int, k int) int64 {
         if _, ok:=track[num]; !ok {
             track[num] = i
         }else{
-            if prefixSum[i] < prefixSum[track[num]] {
+            // we want to get rid of the previous segment that contribute negatively to the sum
+            // if prefixSum[i] < prefixSum[track[num]] {
+            //     track[num] = i
+            // }
+            if rangeSum(track[num], i-1) < 0 {
                 track[num] = i
             }
         }
