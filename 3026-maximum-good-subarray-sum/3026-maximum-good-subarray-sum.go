@@ -5,35 +5,39 @@ func maximumSubarraySum(nums []int, k int) int64 {
         prefixSum[i+1] = prefixSum[i] + int64(nums[i])
     }
 
-    track := make(map[int][]int)
-    for i:=0;i<n;i++{
-        num := nums[i]
-        track[num+k] = append(track[num+k], i) 
-        track[num-k] = append(track[num-k], i)
-    }
-
     rangeSum := func(start, end int) int64 {
+        if start > end {
+            start, end = end, start
+        }
         return prefixSum[end+1] - prefixSum[start]
     }
 
-    res := int64(0)
+    res := int64(math.MinInt)
+    track := make(map[int][]int)
     found := false
     for i:=0;i<n;i++{
-        candidates := track[nums[i]]
+        num := nums[i]
+        if track[num+k] != nil {
+            res = max(res, rangeSum(track[num+k][0], i))
+            found = true
+        }
+        if track[num-k] != nil {
+            res = max(res, rangeSum(track[num-k][0], i))
+            found = true
+        }
 
-        for _, cand := range candidates {
-            if cand >= i {
-                // fmt.Println(i, cand)
-                if !found {
-                    res = rangeSum(i, cand)
-                }else{
-                    res = max(res, rangeSum(i, cand))
-                }
-                found = true
+        if track[num] == nil {
+            track[num] = []int{i}
+        }else{
+            if prefixSum[i] < prefixSum[track[num][0]] {
+                track[num][0] = i
             }
         }
     }
-
+    // fmt.Println(track)
+    if !found {
+        return 0
+    }
     return res
 }
 
