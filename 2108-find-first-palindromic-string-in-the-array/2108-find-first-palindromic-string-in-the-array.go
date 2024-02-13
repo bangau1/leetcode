@@ -12,8 +12,8 @@ func isPalindrome(s string) bool {
     if n == 1 {
         return true
     }
-    if n == 2 {
-        return s[0] == s[1]
+    if n <= 3 {
+        return s[0] == s[n-1]
     }
     var l, r int
     if n % 2 == 0 {
