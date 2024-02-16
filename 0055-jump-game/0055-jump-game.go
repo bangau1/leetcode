@@ -7,31 +7,17 @@ func canJump(nums []int) bool {
         dp[i] = -1
     }
     dp[n-1] = n-1
-    dfs(0, dp, nums)
-    return dp[0] == n -1
-}
-
-func dfs(idx int, dp []int, nums []int){
-    n := len(nums)
-    if idx == n-1 {
-        dp[idx] = n-1
-        return
-    }
-    if nums[idx] == 0{
-        dp[idx] = idx
-        return
-    }
-    if dp[idx] != -1 {
-        return
-    }
-
-    for jump:=nums[idx];jump >=1;jump--{
-        if idx + jump >= n-1{
-            dp[idx] = n-1
-            break
+    for i:=n-2;i>=0;i--{
+        if i + nums[i] >= n-1{
+            dp[i] = n-1
         }else{
-            dfs(idx+jump, dp, nums)
-            dp[idx] = max(dp[idx], dp[idx+jump])
+            for jump:=1;jump<=nums[i];jump++{
+                if dp[i+jump] == n -1 {
+                    dp[i] = n-1
+                    break
+                }
+            }
         }
     }
+    return dp[0] == n-1
 }
