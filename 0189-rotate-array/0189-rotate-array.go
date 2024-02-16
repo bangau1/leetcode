@@ -2,6 +2,7 @@ func rotate(nums []int, k int)  {
     c := 0
     n := len(nums)
     i := 0
+    k = k % n
     for c < n {
         c += doRotate(i, nums, k)
         i++
