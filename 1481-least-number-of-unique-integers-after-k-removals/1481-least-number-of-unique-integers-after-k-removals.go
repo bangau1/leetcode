@@ -4,7 +4,7 @@ func findLeastNumOfUniqueInts(arr []int, k int) int {
     for _, num := range arr {
         counter[num]++
     }
-    occurences := make([]int, len(counter))
+    occurences := arr[:len(counter)]
     var idx int
     for _, c := range counter{
         occurences[idx] = c
