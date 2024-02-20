@@ -3,17 +3,14 @@ func threeSum(nums []int) [][]int {
     sort.Ints(nums)
     var res [][]int
     n := len(nums)
-    dict := make(map[[3]int]bool)
     for i:=0;i<n;i++{
         if i > 0 && nums[i] == nums[i-1] {
             continue
         }
+        // fmt.Println("consider ", i)
         twoRes := twoSum(nums[i+1:], -nums[i])
         for _, twoSums := range twoRes {
-            if _, ok:=dict[[3]int{nums[i], twoSums[0], twoSums[1]}]; !ok {
-                res = append(res, []int{nums[i], twoSums[0], twoSums[1]})
-                dict[[3]int{nums[i], twoSums[0], twoSums[1]}] = true
-            }
+            res = append(res, []int{nums[i], twoSums[0], twoSums[1]})
         }
     }
 
@@ -37,6 +34,9 @@ func twoSum(sorted []int, target int) [][]int {
             continue
         }else{
             res = append(res, []int{sorted[l], sorted[r]})
+            for l + 1 < n && sorted[l+1] == sorted[l] {
+                l++
+            }
         }
         l++
     }
