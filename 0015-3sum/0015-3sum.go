@@ -1,42 +1,41 @@
-
-func twoSum(sorted []int, start, end, target int) [][]int {
-    l, r := start, end
-    if sorted[l] + sorted[l+1] > target {
-        return nil
-    }
-    if sorted[r-1] + sorted[r] < target {
-        return nil
-    }
-    res := make([][]int, 0)
-    for l < r {
-        sum := sorted[l] + sorted[r]
-        if sum < target {
-            l++
-        }else if sum > target {
-            r--
-        }else{
-            res = append(res, []int{sorted[l], sorted[r]})
-            for l + 1 < len(sorted) && sorted[l] == sorted[l+1] {
-                l++
-            }
-            l++
-        }
-    }
-    return res
-}
+type three [3]int
 
 func threeSum(nums []int) [][]int {
     sort.Ints(nums)
-    res := make([][]int, 0)
-    for i:=0;i<len(nums)-2;i++{
-        data := twoSum(nums, i+1, len(nums)-1, -nums[i])
-        for _, datum := range data {
-            arr := []int{nums[i], datum[0], datum[1]}
-                res = append(res, arr)
-        }
-        for i + 1 <len(nums) && nums[i+1] == nums[i] {
-            i++
+    var res [][]int
+    dict := make(map[three]bool)
+    n := len(nums)
+    var data []int
+    for i:=0;i<n;i++{
+        twoRes := twoSum(nums[i+1:], -nums[i])
+        for _, twoSums := range twoRes {
+            data = []int{nums[i], twoSums[0], twoSums[1]}
+            sort.Ints(data)
+            dict[three{data[0], data[1], data[2]}] = true
         }
     }
+
+    for key, _ := range dict {
+        res = append(res, []int{key[0], key[1], key[2]})
+    }
+
+    return res
+}
+
+func twoSum(sorted []int, target int) [][]int {
+    n := len(sorted)
+    if n < 2 {
+        return nil
+    }
+    var res [][]int
+    for i:=0;i<n;i++{
+        search := target-sorted[i]
+
+        idx := sort.SearchInts(sorted[i+1:], search)
+        if idx+i+1 < n && sorted[i+1+idx] == search {
+            res = append(res, []int{sorted[i], search})
+        }
+    }
+
     return res
 }
