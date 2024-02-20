@@ -5,6 +5,9 @@ func threeSum(nums []int) [][]int {
     n := len(nums)
     dict := make(map[[3]int]bool)
     for i:=0;i<n;i++{
+        if i > 0 && nums[i] == nums[i-1] {
+            continue
+        }
         twoRes := twoSum(nums[i+1:], -nums[i])
         for _, twoSums := range twoRes {
             if _, ok:=dict[[3]int{nums[i], twoSums[0], twoSums[1]}]; !ok {
@@ -24,6 +27,9 @@ func twoSum(sorted []int, target int) [][]int {
     }
     var res [][]int
     for i:=0;i<n;i++{
+        if i > 0 && sorted[i] == sorted[i-1] {
+            continue
+        }
         search := target-sorted[i]
 
         idx := sort.SearchInts(sorted[i+1:], search)
