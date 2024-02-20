@@ -26,17 +26,19 @@ func twoSum(sorted []int, target int) [][]int {
         return nil
     }
     var res [][]int
-    for i:=0;i<n;i++{
-        if i > 0 && sorted[i] == sorted[i-1] {
+    l, r := 0, n-1
+    for l < r {
+        sum := sorted[l] + sorted[r]
+        if sum < target {
+            l++
             continue
+        }else if sum > target {
+            r--
+            continue
+        }else{
+            res = append(res, []int{sorted[l], sorted[r]})
         }
-        search := target-sorted[i]
-
-        idx := sort.SearchInts(sorted[i+1:], search)
-        if idx+i+1 < n && sorted[i+1+idx] == search {
-            res = append(res, []int{sorted[i], search})
-        }
+        l++
     }
-    // fmt.Println(res)
     return res
 }
