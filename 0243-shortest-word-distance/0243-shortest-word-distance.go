@@ -42,13 +42,16 @@ func shortestDistance(wordsDict []string, word1 string, word2 string) int {
     for idx, word := range wordsDict {
         if word == word1{
             i = idx
+            if i != -1 && j != -1 {
+                minRes = min(minRes, abs(i-j))
+            }
         }else if word == word2 {
             j = idx
+            if i != -1 && j != -1 {
+                minRes = min(minRes, abs(i-j))
+            }
         }
-
-        if i != -1 && j != -1 {
-            minRes = min(minRes, abs(i-j))
-        }
+        
     }
 
     return minRes
