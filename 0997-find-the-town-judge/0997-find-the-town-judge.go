@@ -1,7 +1,7 @@
 func findJudge(n int, trust [][]int) int {
     // this is basically can be solved by counting the out-edge number
-    out := [1001]int{}
-    in := [1001]int{}
+    out := make([]int, n + 1)
+    in := make([]int, n + 1)
     for _, t := range trust {
         out[t[0]]++
         in[t[1]]++
