@@ -9,22 +9,16 @@ func findAllPeople(n int, meetings [][]int, firstPerson int) []int {
     // if somehow we can reach all of them earlier than the next meeting available, it means we don't need to go further
     adjList := make([][]edge, n)
 
-    // fmt.Println("before")
-    // printMatrix(matrix)
     adjList[0] = append(adjList[0], edge{firstPerson, 0})
     adjList[firstPerson] = append(adjList[firstPerson], edge{0, 0})
     
     for _, m := range meetings {
         a, b, time := m[0], m[1], m[2]
-       
         adjList[a] = append(adjList[a], edge{b, time})
         adjList[b] = append(adjList[b], edge{a, time})
     }
-    // fmt.Println("after")
-    // printMatrix(matrix)
     var res []int
     dist := djikstra(0, adjList)
-    // fmt.Println("dist", dist)
     for i:=0;i<n;i++{
         if dist[i] != math.MaxInt{
             res = append(res, i)
@@ -32,15 +26,6 @@ func findAllPeople(n int, meetings [][]int, firstPerson int) []int {
     }
     return res
 }
-
-func printMatrix(matrix [][]int) {
-    fmt.Println("===============")
-    n := len(matrix)
-    for i:=0;i<n;i++{
-        fmt.Println(matrix[i])
-    }
-}
-
 
 func djikstra(src int, adjList [][]edge) []int {
 	n := len(adjList)
@@ -56,19 +41,11 @@ func djikstra(src int, adjList [][]edge) []int {
 	}, vertex{
 		src, 0,
 	})
-    lastTime := 0
 	for pq.Len() > 0 {
 		u := heap.Pop(&pq).(vertex)
-        if u.node == 88 {
-            fmt.Println("88")
-        }
 		if visited[u.node][u.time] {
 			continue
 		}
-        if lastTime > u.time {
-            panic("unexpected")
-        }
-        lastTime = max(u.time, lastTime)
 
 		visited[u.node][u.time] = true
         for _, edge := range adjList[u.node] {
