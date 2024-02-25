@@ -4,18 +4,20 @@ func generatePrimes(n int) []int {
     for i:=0;i<=n;i++{
         isPrime[i] = true
     }
-    for i:=2;i*i<=n;i++{
+    isPrime[3] = true
+    for i:=3;i*i<=n;i+=2{
         if !isPrime[i] {
             continue
         }
         
-        for p:=i<<1;p<=n;p+=i{
+        for p:=i*i;p<=n;p+=i{
             isPrime[p] = false
         }
 
     }
-    for i:=2;i<=n;i++{
-        if isPrime[i]{
+    primes = append(primes, 2)
+    for i:=3;i<=n;i++{
+        if i&1==1 && isPrime[i] {
             primes = append(primes, i)
         }
     }
