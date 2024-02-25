@@ -55,7 +55,6 @@ func computePrimeFactor(n int) []int {
 }
 
 func canTraverseAllPairs(nums []int) bool {
-    
     n := len(nums)
     if n == 1 {
         return true
