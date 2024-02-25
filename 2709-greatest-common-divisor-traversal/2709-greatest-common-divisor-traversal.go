@@ -57,11 +57,14 @@ func canTraverseAllPairs(nums []int) bool {
         parents[i] = -1
     }
 
-    primeToLastIdx := make(map[int]int)
+    primeToLastIdx := make([]int, 10000)
+    for i:=0;i<len(primeToLastIdx);i++{
+        primeToLastIdx[i] = -1
+    }
     setLastIdx := func(idx int) {
         primeFactors := computePrimeFactor(nums[idx])
         for _, factor := range primeFactors {
-            if _, ok:=primeToLastIdx[factor]; !ok {
+            if primeToLastIdx[factor] == -1 {
                 primeToLastIdx[factor] = idx
             }else{
                 union(parents, primeToLastIdx[factor], idx)
