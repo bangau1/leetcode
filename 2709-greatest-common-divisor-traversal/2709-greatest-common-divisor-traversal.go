@@ -33,7 +33,7 @@ func init() {
 func computePrimeFactor(n int) []int {
     c := n
     var factor []int
-    for i:=0;i<len(PRIMES) && PRIMES[i]*PRIMES[i] <= n && c > 1;i++{
+    for i:=0;i<len(PRIMES) && c > 1 && PRIMES[i]*PRIMES[i] <= n ;i++{
         if c % PRIMES[i] == 0 {
             factor = append(factor, PRIMES[i])
             for c > 1 && c % PRIMES[i] == 0 {
