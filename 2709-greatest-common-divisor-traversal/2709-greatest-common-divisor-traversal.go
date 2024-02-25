@@ -24,9 +24,15 @@ func generatePrimes(n int) []int {
     return primes
 }
 var PRIMES []int
+var PRIME_FACTORS [][]int
+
 func init() {
     if len(PRIMES) == 0 {
-        PRIMES = generatePrimes(10000)
+        PRIMES = generatePrimes(320)
+    }
+    PRIME_FACTORS = make([][]int, 100001)
+    for i:=2;i<=100000;i++{
+        PRIME_FACTORS[i] = computePrimeFactor(i)
     }
 }
 
@@ -74,7 +80,7 @@ func canTraverseAllPairs(nums []int) bool {
 
     primeToLastIdx := make(map[int]int)
     setLastIdx := func(idx int) {
-        primeFactors := computePrimeFactor(nums[idx])
+        primeFactors := PRIME_FACTORS[nums[idx]]
         for _, factor := range primeFactors {
             if _, ok:=primeToLastIdx[factor]; !ok {
                 primeToLastIdx[factor] = idx
