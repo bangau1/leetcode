@@ -57,6 +57,9 @@ func canTraverseAllPairs(nums []int) bool {
     parents := make([]int, n)
     for i:=0;i<n;i++{
         parents[i] = -1
+        if nums[i] == 1 {
+            return false
+        }
     }
 
     primeToLastIdx := make(map[int]int)
@@ -73,18 +76,11 @@ func canTraverseAllPairs(nums []int) bool {
 
     }
     for i:=0;i<n;i++{
-        if nums[i] == 1 {
-            return false
-        }
         setLastIdx(i)
     }
 
-    for i:=0;i<n;i++{
-        if parents[i] < 0 && -parents[i] == n {
-            return true
-        }
-    }
-    return false
+    unionId := find(parents, 0)
+    return -parents[unionId] == n
    
 }
 
