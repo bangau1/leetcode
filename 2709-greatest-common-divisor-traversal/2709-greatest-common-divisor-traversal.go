@@ -49,11 +49,21 @@ func computePrimeFactor(n int) []int {
 }
 
 func canTraverseAllPairs(nums []int) bool {
+    
     n := len(nums)
     if n == 1 {
         return true
     }
 
+    unique := make(map[int]bool)
+    for _, num := range nums {
+        unique[num] = true
+    }
+    nums = make([]int, 0)
+    for k, _ := range unique {
+        nums = append(nums, k)
+    }
+    n  = len(nums)
     parents := make([]int, n)
     for i:=0;i<n;i++{
         parents[i] = -1
