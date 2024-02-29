@@ -6,34 +6,18 @@ func canSeePersonsCount(h []int) []int {
     n := len(h)
     res := make([]int, n)
     
-    last := n-1
-    for i:=n-2;i>=0;i--{
-        for ii:=last;ii>=i+1;ii--{
-            for len(stack) > 0 && h[ii] > h[stack[len(stack)-1]] {
-                stack = stack[:len(stack)-1]
-            }
-            stack = append(stack, ii)
+    for i:=n-1;i>=0;i--{
+        c := 0
+        for len(stack) > 0 && h[i] > h[stack[len(stack)-1]] {
+            stack = stack[:len(stack)-1]
+            c++
         }
-
-        last = i
-        if h[i] > h[stack[0]] {
-            res[i] = len(stack)
-            continue
+        if len(stack) > 0 {
+            c+=1
         }
-        // look at the smallest idx, such that h[stack[idx]] > h[i]
-        // then the number of people is idx+1
-        // but our stack is reverse actually
-        //  [8,5,1] 3 => 2 people
-        //  search left idx that is < 
-        idx := sort.Search(len(stack), func(idx int) bool {
-            return h[stack[idx]] < h[i]
-        })
-
-        if idx-1 >= 0 {
-            res[i] = len(stack)-(idx-1)
-        }else{
-            res[i] = len(stack)
-        }
+        stack = append(stack, i)
+        
+        res[i] = c
     }
     return res
 }
