@@ -7,17 +7,15 @@ func canSeePersonsCount(h []int) []int {
     res := make([]int, n)
     
     for i:=n-1;i>=0;i--{
-        c := 0
+        
         for len(stack) > 0 && h[i] > h[stack[len(stack)-1]] {
             stack = stack[:len(stack)-1]
-            c++
+            res[i]++
         }
         if len(stack) > 0 {
-            c+=1
+            res[i]+=1
         }
         stack = append(stack, i)
-        
-        res[i] = c
     }
     return res
 }
