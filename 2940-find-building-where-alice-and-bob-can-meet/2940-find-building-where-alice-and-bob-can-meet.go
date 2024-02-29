@@ -1,6 +1,6 @@
 func leftmostBuildingQueries(h []int, queries [][]int) []int {
     nge := computeNGE(h)
-    fmt.Println("nge", nge)
+    // fmt.Println("nge", nge)
     var ans []int
     for _, query := range queries {
         a, b := query[0], query[1]
@@ -18,7 +18,6 @@ func leftmostBuildingQueries(h []int, queries [][]int) []int {
             subAns = b
         }else{
             for b != -1 && h[b] <= h[a]{
-                
                 b = nge[b]
             }
             if b != -1 && h[b] > h[a] {
