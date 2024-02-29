@@ -16,6 +16,10 @@ func canSeePersonsCount(h []int) []int {
         }
 
         last = i
+        if h[i] > h[stack[0]] {
+            res[i] = len(stack)
+            continue
+        }
         // look at the smallest idx, such that h[stack[idx]] > h[i]
         // then the number of people is idx+1
         // but our stack is reverse actually
