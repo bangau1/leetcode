@@ -1,28 +1,25 @@
 func rotate(nums []int, k int)  {
-    c := 0
     n := len(nums)
-    i := 0
     k = k % n
-    for c < n {
-        c += doRotate(i, nums, k)
-        i++
+    if k == 0 {
+        return
     }
-    
+
+    // the basic idea is to reverse the nums
+    // [1,2,3,4,5] -> [5,4,3,2,1]
+    // then for the first k and the last n-k element, we should reverse it back independently
+    // [4,5,1,2,3]
+    reverse(nums)
+    reverse(nums[:k])
+    reverse(nums[k:])
 }
 
-func doRotate(idx int, nums []int, k int) int {
+func reverse(nums []int) {
     n := len(nums)
-    c := 1
-    prev := idx
-    next := (prev + k ) % n
-    var tmp int
-    nums[next], tmp = nums[prev], nums[next]
-        
-    for next != idx {
-        prev = next
-        next = (prev + k ) % n
-        nums[next], tmp = tmp, nums[next]
-        c++
+    l, r := 0, n-1
+    for l < r {
+        nums[l], nums[r] = nums[r], nums[l]
+        l++
+        r--
     }
-    return c
 }
