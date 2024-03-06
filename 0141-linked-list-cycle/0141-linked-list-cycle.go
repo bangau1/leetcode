@@ -6,19 +6,17 @@
  * }
  */
 func hasCycle(head *ListNode) bool {
-    if head == nil || head.Next == nil {
+    if head == nil {
         return false
     }
-    // using hare and tortoise algo
-    fast, slow := head, head
-
-    for fast != nil && fast.Next != nil {
-        slow = slow.Next
-        fast = fast.Next.Next
-
-        if slow == fast {
+    // can be solved by using fast-slow pointer
+    slow, fast := head, head
+    for fast.Next != nil && fast.Next.Next != nil {
+        if slow == fast.Next.Next {
             return true
         }
+        slow = slow.Next
+        fast = fast.Next.Next
     }
 
     return false
