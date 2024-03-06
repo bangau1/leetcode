@@ -2,8 +2,12 @@ func maxStarSum(vals []int, edges [][]int, k int) int {
     adjList := make([][]int, len(vals))
     for _, edge := range edges {
         a, b := edge[0], edge[1]
-        adjList[a] = append(adjList[a], b)
-        adjList[b] = append(adjList[b], a)
+        if vals[b] > 0 {
+            adjList[a] = append(adjList[a], b)
+        }
+        if vals[a] > 0 {
+            adjList[b] = append(adjList[b], a)
+        }
     }
     for i:=0;i<len(vals);i++{
         sort.Slice(adjList[i], func(a, b int) bool {
