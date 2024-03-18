@@ -28,7 +28,7 @@ func findMinArrowShots(points [][]int) int {
     return len(res)
 }
 
-func isOverlap(a, b []int) (bool, []int) {
+func isOverlap(a, b []int) (bool, [2]int) {
     if a[0] > b[0] {
         a, b = b, a
     }
@@ -36,8 +36,8 @@ func isOverlap(a, b []int) (bool, []int) {
     // 1. a.start <= b.start <= a.end
     overlap := b[0] <= a[1]
     if !overlap {
-        return false, nil
+        return false, [2]int{}
     }
 
-    return overlap, []int{b[0], min(a[1], b[1])}
+    return overlap, [2]int{b[0], min(a[1], b[1])}
 }
