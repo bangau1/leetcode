@@ -28,7 +28,7 @@ func leastInterval(tasks []byte, n int) int {
     }
     heap.Init(pq)
     
-    seq := make([]byte, 0)
+    // seq := make([]byte, 0)
     interval := 0
 
     for len(queue) > 0 || pq.Len() > 0 {
@@ -36,21 +36,21 @@ func leastInterval(tasks []byte, n int) int {
         if pq.Len() > 0 {
             pop := heap.Pop(pq).(Task)
             pop.count--
-            seq = append(seq, pop.id)
+            // seq = append(seq, pop.id)
 
             if pop.count > 0 {
                 pop.nextTime = interval + n
                 queue = append(queue, pop)
             }
         }else{
-            seq = append(seq, idleId)
+            // seq = append(seq, idleId)
         }
         if len(queue) > 0 && queue[0].nextTime <= interval {
             heap.Push(pq, queue[0])
             queue = queue[1:]
         }
     }
-    fmt.Println(string(seq))
+    // fmt.Println(string(seq))
     return interval
 
 }
