@@ -79,3 +79,32 @@ func FloydWarshall(adjList [][]Vertex) [][]int {
 	}
 	return dist
 }
+
+type Edge struct {
+	src, dest, cost int
+}
+
+// BellmanFord is a single source to all target shortest distance
+// it does relaxation for V-1 times, each time it update the dist[v] = dist[u] + cost(edge(u, v))
+func BellmanFord(src int, adjList [][]Vertex) []int {
+	n := len(adjList)
+	edges := make([]Edge, 0)
+	for i := 0; i < n; i++ {
+		for ii := 0; ii < len(adjList[i]); ii++ {
+			edges = append(edges, Edge{i, adjList[i][ii].Node, adjList[i][ii].Cost})
+		}
+	}
+	dist := make([]int, n)
+	core.ArrayFill(dist, math.MaxInt)
+	dist[src] = 0
+	// relaxation n-1 time
+	for i := 0; i < n-1; i++ {
+		for _, edge := range edges {
+			if dist[edge.src] != math.MaxInt && dist[edge.dest] > dist[edge.src]+edge.cost {
+				dist[edge.dest] = dist[edge.src] + edge.cost
+			}
+		}
+	}
+
+	return dist
+}

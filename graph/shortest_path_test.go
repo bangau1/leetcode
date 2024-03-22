@@ -29,9 +29,11 @@ func TestShortestPath(t *testing.T) {
 	}
 	djikstraDist := graph.DjikstraAdjList(0, adjList)
 	floydDist := graph.FloydWarshall(adjList)
+	bellmanFord := graph.BellmanFord(0, adjList)
 
 	for i := 0; i < n; i++ {
 		assert.Equal(t, djikstraDist[i], floydDist[0][i], "failed on i=%d", i)
+		assert.Equal(t, djikstraDist[i], bellmanFord[i], "failed on i=%d", i)
 	}
 
 }
