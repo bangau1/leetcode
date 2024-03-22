@@ -12,12 +12,13 @@ func isPalindrome(head *ListNode) bool {
         q = append(q, curr.Val)
         curr = curr.Next
     }
-
-    for len(q) > 1 {
-        if q[0] != q[len(q)-1] {
+    l, r := 0, len(q)-1
+    for l < r {
+        if q[l] != q[r]{
             return false
         }
-        q = q[1:len(q)-1]
+        l++
+        r--
     }
     return true
 }
