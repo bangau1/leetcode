@@ -12,10 +12,10 @@ func maxSlidingWindow(nums []int, k int) []int {
     }
     res := make([]int, 0)
     res = append(res, nums[q[0]])
-
+    var validIdx int
     for i:=k;i < n;i++{
         // remove old element from the queue
-        validIdx := i - k + 1
+        validIdx = i - k + 1
         for len(q) > 0 && q[0] < validIdx {
             q = q[1:]
         }
