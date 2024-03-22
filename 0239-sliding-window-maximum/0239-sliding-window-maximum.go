@@ -1,34 +1,29 @@
 func maxSlidingWindow(nums []int, k int) []int {
-    if k == 1 {
-        return nums
-    }
+    // we can use monotonic-dequeu to maintain the max element on the window
+    // the idea is to only insert the element in the window when it is bigger from current queue's back element (non-increaseing queue)
+    q := make([]int, 0)
     n := len(nums)
-    res := make([]int, n - k + 1)
-    deque := list.New()
-
+    // add the first k element
     for i:=0;i<k;i++{
-        for deque.Len() > 0 && nums[i] >= nums[deque.Back().Value.(int)] {
-            deque.Remove(deque.Back())
+        for len(q) > 0 && nums[q[len(q)-1]] < nums[i] {
+            q = q[:len(q)-1] // pop the back
         }
-        deque.PushBack(i)
+        q = append(q, i)
     }
-    idx := 0
-    res[idx] = nums[deque.Front().Value.(int)]
-    idx++
-    
-    var start int
-    for i:=k;i<n;i++{
-        for deque.Len() > 0 && nums[i] >= nums[deque.Back().Value.(int)] {
-            deque.Remove(deque.Back())
+    res := make([]int, 0)
+    res = append(res, nums[q[0]])
+
+    for i:=k;i < n;i++{
+        // remove old element from the queue
+        validIdx := i - k + 1
+        for len(q) > 0 && q[0] < validIdx {
+            q = q[1:]
         }
-        // valid range: start=i-k+1 end=i
-        start = i - k + 1
-        for deque.Len() > 0 && deque.Front().Value.(int) < start {
-            deque.Remove(deque.Front())
+        for len(q) > 0 && nums[q[len(q)-1]] < nums[i] {
+            q = q[:len(q)-1] // pop the back
         }
-        deque.PushBack(i)
-        res[idx] = nums[deque.Front().Value.(int)]
-        idx++
+        q = append(q, i)
+        res = append(res, nums[q[0]])
     }
     return res
 }
