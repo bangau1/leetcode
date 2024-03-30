@@ -1,6 +1,8 @@
 import (
     "container/list"
 )
+
+var counter = make([]int, 20000+1)
 func subarraysWithKDistinct(nums []int, k int) int {
     // general idea:
     // - need to maintain a counter map
@@ -13,32 +15,42 @@ func subarraysWithKDistinct(nums []int, k int) int {
     // further improve on how to avoid naive way when len(counter) == k
     // - we keep the lastIndex on certain data structure
     // - then get the first minimum value, then the subtotal+= minValue - left + 1
-    counter := make(map[int]int)
+    arrFills(counter, 0)
+    countDist := 0
     lastIdxWindow := NewLastIdxWindow()
 
     var left, total int
     n := len(nums)
     
     for r := 0;r < n;r++{
+        if counter[nums[r]] == 0 {
+            countDist++
+        }
         counter[nums[r]]++
         lastIdxWindow.Append(nums[r], r)
 
-        for left <= r && len(counter) > k {
+        for left <= r && countDist > k {
             counter[nums[left]]--
             if counter[nums[left]] == 0 {
-                delete(counter, nums[left])
+                countDist--
                 lastIdxWindow.RemoveNum(nums[left])
             }
             left++
         }
 
-        if len(counter) == k {
+        if countDist == k {
             total += lastIdxWindow.GetLeft() - left + 1
         }
 
     }
 
     return total 
+}
+
+func arrFills(arr []int, val int) {
+    for i:=0;i<len(arr);i++{
+        arr[i] = val
+    }
 }
 
 type LastIdxWindow struct {
