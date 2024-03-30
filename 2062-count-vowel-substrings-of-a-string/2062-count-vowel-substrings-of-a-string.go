@@ -1,7 +1,5 @@
 
 func countVowelSubstrings(word string) int {
-    fmt.Println(countAtMostKVowels(word, 5))
-    fmt.Println(countAtMostKVowels(word, 4))
     return countAtMostKVowels(word, 5) - countAtMostKVowels(word, 4)
 }
 
