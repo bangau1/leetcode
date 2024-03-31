@@ -22,6 +22,8 @@ func countSubarrays(nums []int, minK int, maxK int) int64 {
     total := int64(0)
     var l int
     n := len(nums)
+    var minIdx int
+    var lastHoldIdx int
 
     for r:=0;r<n;r++{
         minQ.PushBack(r)
@@ -47,11 +49,11 @@ func countSubarrays(nums []int, minK int, maxK int) int64 {
         }
 
         if minQ.Len() > 0 && maxQ.Len() > 0 && nums[minQ.Front()] == minK && nums[maxQ.Front()] == maxK {
-            minIdx := min(minQ.Front(), maxQ.Front())
+            minIdx = min(minQ.Front(), maxQ.Front())
             for l < minIdx && (nums[l] > maxK || nums[l] < minK){
                 l++
             }
-            lastHoldIdx := min(lastMinIdx, lastMaxIdx)
+            lastHoldIdx = min(lastMinIdx, lastMaxIdx)
             // fmt.Println(nums[l:r+1])
             total += int64(lastHoldIdx-l+1)
         }
