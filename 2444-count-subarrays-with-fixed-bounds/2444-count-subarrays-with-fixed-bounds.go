@@ -6,7 +6,9 @@ General idea:
         - let mostLeftIdx := min(idx(minEl), idx(maxEl))
         - remove the mostLeftIdx on both until the condition is satisfied (minEL >= minK && maxEl <= maxK)
     - else, it means that minEl >= minK || maxEl <= maxK, then we can keep increasing the window until satisfied.
-        - when satified, the number of subarray is from len(left...right)
+        - when satified, then the subarray is from [left...right]. 
+        - we also need to keep track the lastMinIdx and lastMaxIdx, lastMinIdx = r when nums[r] == minK and lastMaxIdx = r when nums[r] == maxK
+        - then let lastHoldMinIdx = min(lastMinIdx, lastMaxIdx), then the position can be [left...lastHoldMinIdx...right], so the total subarray is from lastHoldMinIdx-left+1
         - keep increasing the window and add the subarray total
     
 */
