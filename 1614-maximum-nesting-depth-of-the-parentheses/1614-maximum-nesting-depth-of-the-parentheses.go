@@ -1,19 +1,20 @@
 var open, close byte = '(', ')'
+var stack, maxD int
+var n int
 
 func maxDepth(s string) int {
-    var stack int
-    maxDepth := 0
-
-    for i:=0;i<len(s);i++{
+    stack, maxD = 0, 0
+    n = len(s)
+    for i:=0;i<n;i++{
         if s[i] == open {
             stack++
         }else if s[i] == close {
-            if maxDepth < stack {
-                maxDepth = stack
+            if maxD < stack {
+                maxD = stack
             }
             stack--
         }
     }
 
-    return maxDepth
+    return maxD
 }
