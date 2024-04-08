@@ -6,7 +6,7 @@ func countStudents(students []int, sandwiches []int) int {
         pref[students[i]]++
     }
 
-    for len(students) > 0 {
+    for len(sandwiches) > 0 && pref[sandwiches[0]] > 0 {
         for len(students) > 0 && students[0] == sandwiches[0] {
             pref[students[0]]--
             students = students[1:]
@@ -19,9 +19,6 @@ func countStudents(students []int, sandwiches []int) int {
             students = append(students, topStudent)
         }
 
-        if len(sandwiches) > 0 && pref[sandwiches[0]] == 0 {
-            break
-        }
     }
 
     return len(students)
