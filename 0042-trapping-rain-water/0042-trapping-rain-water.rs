@@ -32,24 +32,8 @@ impl Solution {
 
     pub fn trap(height: Vec<i32>) -> i32 {
         let nge = Solution::next_greater_element(&height, true);
-        let mut ngeEl: Vec<i32> = vec![-1;nge.len()];
-        for (pos, &val) in nge.iter().enumerate() {
-            if val != -1 {
-                ngeEl[pos] = height[val as usize];
-            }
-            
-        }
-
         let pge = Solution::next_greater_element(&height, false);
-        let mut pgeEl: Vec<i32> = vec![-1;pge.len()];
-        for (pos, &val) in pge.iter().enumerate() {
-            if val != -1 {
-                pgeEl[pos] = height[val as usize];
-            }
-            
-        }
-
-
+      
         let mut i = 0;
         let mut total_water = 0;
         while i < height.len() {
@@ -64,13 +48,15 @@ impl Solution {
             }
 
             let min = std::cmp::min(height[left], height[right]);
-            let mut sub_total = 0;
-            for pos in left+1..right {
-                sub_total += min - height[pos];
+            if left != i && right != i {
+                for pos in left+1..right {
+                    total_water += min - height[pos];
+                }
+                i = right + 1;
+            } else{
+                i+=1;
             }
-            total_water += sub_total;
 
-            i = right + 1;
         }
         return total_water
 
