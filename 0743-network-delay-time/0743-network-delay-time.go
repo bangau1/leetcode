@@ -3,7 +3,7 @@ func networkDelayTime(times [][]int, n int, k int) int {
     // dist = djikstra(k, graph)
     // answer = max(dist)
     adjList := make([][]Vertex, n)
-    for _, time := range times {
+    for _, time := range times { // --> this is O(E), E = number of edges
         s, d, cost := time[0]-1, time[1]-1, time[2]
         adjList[s] = append(adjList[s], Vertex{
             d, cost,
@@ -12,7 +12,7 @@ func networkDelayTime(times [][]int, n int, k int) int {
 
     dist := djikstra(k-1, adjList)
     var res = 0
-    for i:=0;i<n;i++{
+    for i:=0;i<n;i++{ // --> this is O(V), where V = number of nodes
         if dist[i] == math.MaxInt {
             return -1
         }
@@ -28,7 +28,7 @@ func djikstra(source int, adjList [][]Vertex) []int {
     n := len(adjList)
     dist := make([]int, n)
     visited := make([]bool, n)
-    for i:=0;i<n;i++{
+    for i:=0;i<n;i++{ // --> O(V)
         dist[i] = math.MaxInt
     }
     dist[source] = 0
@@ -36,8 +36,8 @@ func djikstra(source int, adjList [][]Vertex) []int {
     pq := NewMinHeap[Vertex](LessFunc)
     heap.Push(pq, Vertex{source, 0})
 
-    for pq.Len() > 0 {
-        source := heap.Pop(pq).(Vertex)
+    for pq.Len() > 0 { // --> this is we try to iterate all of the graph, the edges dynamically generated from each iteration from the binaryHeap
+        source := heap.Pop(pq).(Vertex) // -> this is O(log V)
 
         if visited[source.node]{
             continue
@@ -46,16 +46,17 @@ func djikstra(source int, adjList [][]Vertex) []int {
         visited[source.node] = true
         
         // visit all the neighborhood
-        for _, next := range adjList[source.node] {
+        for _, next := range adjList[source.node] { // for each node, we try to get all the edges to inside the heap. This is O(E)
             if !visited[next.node] && source.cost + next.cost < dist[next.node] {
                 dist[next.node] = source.cost + next.cost
-                heap.Push(pq, Vertex{
+                heap.Push(pq, Vertex{ // -> O(Log V)
                     next.node,
                     dist[next.node],
                 })
             } 
         }
     }
+    // in summary it's gonna be O(V + E log V)
 
     return dist
 }
