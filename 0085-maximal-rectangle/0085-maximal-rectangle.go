@@ -1,6 +1,8 @@
 func maximalRectangle(matrix [][]byte) int {
     h := make([]int, len(matrix[0]))
     var maxArea int
+    var stack []int
+    
     for r := 0;r<len(matrix);r++{
         for c:=0;c<len(h);c++{
             if matrix[r][c] == '1' {
@@ -12,7 +14,7 @@ func maximalRectangle(matrix [][]byte) int {
         // fmt.Println(h)
 
         // compute the largest area of the histogram h
-        var stack []int
+        stack = nil
         
         for c:=0;c<len(h);c++{
             for len(stack) > 0 && h[c] < h[stack[len(stack)-1]] {
