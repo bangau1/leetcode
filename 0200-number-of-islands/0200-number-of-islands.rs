@@ -2,24 +2,24 @@ impl Solution {
     pub fn num_islands(grid: Vec<Vec<char>>) -> i32 {
         let size = grid.len() * grid[0].len();
         let mut ds = DisjointSet::new(size as u32);
-
+        let col_size = grid[0].len();
         for r in 0..grid.len() {
             for c in 0..grid[r].len() {
                 if grid[r][c] == '1' {
-                    let curr_cell_id = to_cell_id(r, c, grid[0].len());
+                    let curr_cell_id = to_cell_id(r, c, col_size);
                     if r >= 1 && grid[r - 1][c] == '1' {
-                        ds.union(curr_cell_id, to_cell_id(r - 1, c, grid[0].len()));
+                        ds.union(curr_cell_id, to_cell_id(r - 1, c, col_size));
                     }
                     if c >= 1 && grid[r][c - 1] == '1' {
-                        ds.union(curr_cell_id, to_cell_id(r, c - 1, grid[0].len()));
+                        ds.union(curr_cell_id, to_cell_id(r, c - 1, col_size));
                     }
                 }else {
                     let curr_cell_id = to_cell_id(r, c, grid[0].len());
                     if r >= 1 && grid[r - 1][c] != '1' {
-                        ds.union(curr_cell_id, to_cell_id(r - 1, c, grid[0].len()));
+                        ds.union(curr_cell_id, to_cell_id(r - 1, c, col_size));
                     }
                     if c >= 1 && grid[r][c - 1] != '1' {
-                        ds.union(curr_cell_id, to_cell_id(r, c - 1, grid[0].len()));
+                        ds.union(curr_cell_id, to_cell_id(r, c - 1, col_size));
                     }
                 }
             }
@@ -27,7 +27,7 @@ impl Solution {
         let mut total = 0;
         let union_ids = ds.get_all_union_ids();
         for &id in union_ids.iter() {
-            let (r, c) = cell_id_to_row_col(id as u32, grid[0].len());
+            let (r, c) = cell_id_to_row_col(id as u32, col_size);
             if grid[r][c] == '1' {
                 total += 1;
             }
