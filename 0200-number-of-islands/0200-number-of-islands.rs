@@ -4,7 +4,7 @@ impl Solution {
         let mut ds = DisjointSet::new(size as u32);
 
         for r in 0..grid.len() {
-            for c in 0..grid[0].len() {
+            for c in 0..grid[r].len() {
                 if grid[r][c] == '1' {
                     let curr_cell_id = to_cell_id(r, c, &grid);
                     if r >= 1 && grid[r - 1][c] == '1' {
