@@ -1,84 +1,125 @@
-func find(parents []int, x int) int {
-    if parents[x] < 0 {
+type DisjointSet struct{
+    parents []int
+}
+
+func NewDisjointSet(n int) DisjointSet{
+    p := make([]int, n)
+    for i:=0;i<n;i++{
+        p[i] = -1
+    }
+    return DisjointSet{
+        parents: p,
+    }
+}
+
+func (d *DisjointSet) Find(x int) int {
+    if d.parents[x] < 0 {
         return x
     }
-
     path := make([]int, 0)
-    
-    for parents[x] >= 0 {
+    for d.parents[x] >= 0 {
         path = append(path, x)
-        x = parents[x]
+        x = d.parents[x]
     }
     for _, p := range path {
-        parents[p] = x
+        d.parents[p] = x
     }
     return x
 }
 
-func union(parents []int, a, b int) {
+func (d *DisjointSet) Union(a, b int) bool {
     if a == b {
-        return
+        return false
     }
-    aId := find(parents, a)
-    bId := find(parents, b)
-    
+
+    aId, bId := d.Find(a), d.Find(b)
     if aId == bId {
-        return
+        return false
     }
 
-    aSize := -parents[aId]
-    bSize := -parents[bId]
-
+    aSize, bSize := d.Size(aId), d.Size(bId)
     if aSize > bSize {
-        parents[bId] = aId
-        parents[aId] = -aSize -bSize
+        d.parents[bId] = aId
+        d.parents[aId] = -aSize -bSize
     }else{
-        parents[aId] = bId
-        parents[bId] = -aSize -bSize
+        d.parents[aId] = bId
+        d.parents[bId] = -aSize -bSize
     }
+    return true
 }
 
-var land = "1"[0]
-var toplefts = [][]int {{-1, 0}, {0, -1}}
-func getTopLeftLands(grid [][]byte, row, col int) [][]int {
-    
-    res := make([][]int, 0)
-    for _, tl := range toplefts{
-        cellX, cellY := row + tl[0], col + tl[1]
-        if cellX >= 0 && cellY >= 0 && grid[cellX][cellY] == land {
-            res = append(res, []int{cellX, cellY})
+func (d *DisjointSet) Size(a int) int {
+    aId := d.Find(a)
+    return -d.parents[aId]
+}
+
+func (d *DisjointSet) SetSize() int {
+    c := 0
+    for _, p := range d.parents {
+        if p < 0 {
+            c++
         }
     }
-    return res
-
+    return c
 }
+
+const (
+    one = byte('1')
+    zero = byte('0')
+) 
+
+
 func numIslands(grid [][]byte) int {
     m, n := len(grid), len(grid[0])
-    parents := make([]int, m*n)
-    for i:=0;i<len(parents);i++{
-        parents[i] = -1 // each is its own
+    set := NewDisjointSet(m*n)
+    getIdx := func(row, col int) int {
+        return row * n + col
+    } 
+    // getRC := func(idx int) (int, int) {
+    //     return idx / n, idx % n
+    // }
+    var topIdx, leftIdx int
+    var zeroIdx = -1
+    var tempIdx int
+    for i:=0;i<m;i++{
+        for j:=0;j<n;j++{
+
+            if grid[i][j] == zero {
+                tempIdx = getIdx(i, j)
+
+                if zeroIdx != -1 {
+                    set.Union(zeroIdx, tempIdx)  
+                }   
+                zeroIdx = tempIdx
+                // r, c := getRC(set.Find(zeroIdx))
+                // assert(grid[r][c] == zero)
+                continue
+            }
+
+            idx := getIdx(i, j)
+            if i > 0 && grid[i-1][j] == one {
+                topIdx = getIdx(i-1, j)
+                set.Union(idx, topIdx)
+            }
+
+            if j > 0 && grid[i][j-1] == one {
+                leftIdx = getIdx(i, j-1)
+                set.Union(idx, leftIdx)
+            }
+            // r, c := getRC(set.Find(idx))
+            // assert(grid[r][c] == one)
+        }
     }
 
-    for r:=0;r<m;r++{
-        for c:=0;c<n;c++{
-            curIdx := r * n + c 
-            if grid[r][c] == land {
-                // check the left and top only
-                lands := getTopLeftLands(grid, r, c)
-                for _, land := range lands {
-                    landIdx := land[0] * n + land[1]
-                    union(parents, curIdx, landIdx)
-                }
-            }else{
-                parents[curIdx] = math.MaxInt
-            }
-        }
+    if zeroIdx != -1 {
+        return set.SetSize() - 1
     }
-    total := 0
-    for _, x := range parents {
-        if x < 0 {
-            total++
-        }
+    return set.SetSize()
+}
+
+
+func assert(cond bool) {
+    if !cond {
+        panic("assert failed")
     }
-    return total
 }
