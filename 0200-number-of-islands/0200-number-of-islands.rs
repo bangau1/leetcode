@@ -13,6 +13,14 @@ impl Solution {
                     if c >= 1 && grid[r][c - 1] == '1' {
                         ds.union(curr_cell_id, to_cell_id(r, c - 1, &grid));
                     }
+                }else {
+                    let curr_cell_id = to_cell_id(r, c, &grid);
+                    if r >= 1 && grid[r - 1][c] != '1' {
+                        ds.union(curr_cell_id, to_cell_id(r - 1, c, &grid));
+                    }
+                    if c >= 1 && grid[r][c - 1] != '1' {
+                        ds.union(curr_cell_id, to_cell_id(r, c - 1, &grid));
+                    }
                 }
             }
         }
