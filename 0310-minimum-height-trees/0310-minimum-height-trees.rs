@@ -41,14 +41,13 @@ impl Solution {
         while remove_count < min_remove_count {
             let mut new_queue = vec![];
             for node in queue {
-                let edge_sets = &adj_list[node as usize].clone();
-                for &next in edge_sets.iter() {
-                    adj_list[next as usize].remove(&node);
-                    if adj_list[next as usize].len() == 1 {
-                        new_queue.push(next);
-                    }
-                    remove_count += 1;
+                let node = node as usize;
+                let &next = adj_list[node].iter().next().unwrap();
+                adj_list[next as usize].remove(&(node as i32));
+                if adj_list[next as usize].len() == 1 {
+                    new_queue.push(next);
                 }
+                remove_count += 1;
             }
             queue = new_queue;
         }
