@@ -7,3 +7,4 @@ mod s310_minimum_height_trees;
 mod s404_sum_of_left_leaves;
 mod s752_open_the_lock;
 mod s931_min_failing_sum;
+mod s514_freedom_trail;
